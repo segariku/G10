@@ -31,10 +31,10 @@ class A_LoginView(View):
                 return redirect(reverse('letswork:employee_list'))
             else:
                 # 認証失敗時のエラーメッセージ
-                messages.error(request, "ログイン情報が正しくありません。")
+                messages.error(request, " ")
         else:
             # フォームの入力内容が無効な場合
-            messages.error(request, "入力内容に誤りがあります。")
+            messages.error(request, " ")
         return render(request, 'account/a_login.html', {'form': form})
 
     def get(self, request, *args, **kwargs):
@@ -68,7 +68,7 @@ class AdminSignupView(FormView):
         return redirect(self.success_url)
 
     def form_invalid(self, form):
-        messages.error(self.request, "入力内容に誤りがあります。")
+        messages.error(self.request, " ")
         return super().form_invalid(form)
 
 #管理者確認
@@ -102,7 +102,7 @@ class SignupConfirmView(FormView):
         admin.set_password(signup_data['password1'])
         admin.save()
         del self.request.session['signup_data']
-        messages.success(request, "管理者アカウントが作成されました！")
+        messages.success(request, " ")
         return redirect(self.success_url)
     
 #従業員
@@ -120,7 +120,7 @@ class E_RegisterView(FormView):
 
     def form_invalid(self, form):
         # フォームが無効な場合の処理
-        messages.error(self.request, "入力内容に誤りがあります。")
+        messages.error(self.request, " ")
         return super().form_invalid(form)
     
 #従業員氏名変更
