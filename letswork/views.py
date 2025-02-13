@@ -27,7 +27,10 @@ from django.utils.timezone import localtime
 
 #打刻
 class SearchView(View):
-    def get(self, request, e_id):
+    def get(self, request, e_id=None):
+        if not e_id:
+             return JsonResponse({'error': 'Employee ID is required'}, status=400)
+        
         last_work = []
         if e_id:
             today = datetime.today()
@@ -49,7 +52,6 @@ class SearchView(View):
             else:
                 result_data = []
         
-        print(result_data)
         return JsonResponse({'results': result_data})
 
 
