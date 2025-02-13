@@ -82,7 +82,7 @@ class TimeStampView(View):
                     start_time = localtime(last_work.w_start)  # 出勤時間をローカルタイムに変換
                     print(f"直前の出勤時間（ローカルタイム）: {start_time}")
                 else:
-                    print("出勤記録が見つかりませんでした。")
+                    print(" ")
                     start_time = form.cleaned_data.get('w_start')  # 出勤記録がない場合
 
                     # 新しい勤怠データを保存
@@ -108,9 +108,9 @@ class TimeStampView(View):
                 if work:
                     work.w_end = timezone.now()  # 現在時刻を退勤時間に設定
                     work.save()
-                    messages.success(request, "退勤時間を登録しました。")
+                    messages.success(request, " ")
                 else:
-                    messages.error(request, "出勤記録が見つかりません。先に出勤を登録してください。")
+                    messages.error(request, " ")
 
                 return redirect('letswork:stamp')
 
@@ -131,9 +131,9 @@ class TimeStampView(View):
                 if work:
                     work.b_start = timezone.now()  # 現在時刻を休憩開始時間に設定
                     work.save()
-                    messages.success(request, "休憩開始時間を登録しました。")
+                    messages.success(request, " ")
                 else:
-                    messages.error(request, "出勤記録が見つかりません。先に出勤を登録してください。")
+                    messages.error(request, " ")
 
                 return redirect('letswork:stamp')
             
@@ -153,9 +153,9 @@ class TimeStampView(View):
                 if work:
                     work.b_end = timezone.now()  # 現在時刻を休憩終了時間に設定
                     work.save()
-                    messages.success(request, "休憩終了時間を登録しました。")
+                    messages.success(request, " ")
                 else:
-                    messages.error(request, "出勤記録が見つかりません。先に出勤を登録してください。")
+                    messages.error(request, " ")
 
                 return redirect('letswork:stamp')
 
@@ -326,7 +326,7 @@ class attendance_edit(View):
     def post(self, request, e_id, *args, **kwargs):
         work = Work.objects.filter(e_id=e_id).last()
         if not work:
-            messages.error(request, "勤怠記録が存在しません。")
+            messages.error(request, " ")
             return redirect("letswork:attendance_edit", e_id=e_id)
 
         # 入力値を取得
@@ -351,9 +351,9 @@ class attendance_edit(View):
                 work.b_end = parse_datetime(f"{work_date}T{break_end}:00")
 
             work.save()
-            messages.success(request, "勤怠記録を更新しました。")
+            messages.success(request, " ")
         except ValueError:
-            messages.error(request, "入力値に誤りがあります。")
+            messages.error(request, " ")
 
         return redirect("letswork:employee_detail", e_id=e_id)
     
@@ -441,7 +441,7 @@ class GenerateJanBarcodeView(View):
         try:
             employee = Account_e.objects.get(e_id=e_id)
         except Account_e.DoesNotExist:
-            return JsonResponse({"error": "従業員が存在しません。"}, status=404)
+            return JsonResponse({"error": ""}, status=404)
         
         # JANコードは8桁
         jan_code = f"{employee.e_id:0>8}"[:8] #8桁にゼロ埋め
@@ -477,11 +477,11 @@ class HourlyWageChangeView(View):
             try:
                 employee.hour = float(new_hourly_wage)
                 employee.save()
-                messages.success(request, "時給を変更しました")
+                
             except ValueError:
-                messages.error(request, "無効な時給です")
+                messages.error(request, " ")
         else:
-            messages.error(request, "時給を入力してください")
+            messages.error(request, " ")
         return redirect('letswork:employee_detail', e_id=e_id)
 
 
